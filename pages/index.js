@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import slugify from "slugify"
 import { getDatabase } from "../lib/notion";
 import { Text } from "./[id].js";
 // import styles from "./index.module.css";
@@ -35,12 +36,12 @@ export default function Home({ posts }) {
                     style={{ width: "100px" }}
                   />
                   <h3>
-                    <Link href={`/${post.id}`}>
+                    <Link href={`/${slugify(post.properties.Name.title[0].text.content)}_${post.id}`}>
                       <Text text={post.properties.Name.title} />
                     </Link>
                   </h3>
                   <p>{date}</p>
-                  <Link href={`/${post.id}`}>Read post →</Link>
+                  <Link href={`/${slugify(post.properties.Name.title[0].text.content)}_${post.id}`}>Read post →</Link>
                 </li>
               </>
             );

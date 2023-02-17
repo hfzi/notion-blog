@@ -166,7 +166,11 @@ export default function Post({ page, blocks, posts }) {
   }
   return (
     <div>
-      <Header title={page.properties.Name.title[0].plain_text} keywords={""} />
+      {/* <Head>
+        <title>{page.properties.Name.title[0].plain_text}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head> */}
+      <Header />
       <Navbar posts={posts} />
       <article className={styles.container}>
         <h1 className={styles.name}>
@@ -194,11 +198,15 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async (context) => {
-  const id = context.params.id.split("_")[1]
+  // const { id } = context.params;
   const database = await getDatabase(databaseId);
+  const id = context.params.id.split("_")[1]
   const page = await getPage(id);
   const blocks = await getBlocks(id);
 
+
+  // Retrieve block children for nested blocks (one level deep), for example toggle blocks
+  // https://developers.notion.com/docs/working-with-page-content#reading-nested-blocks
   const childBlocks = await Promise.all(
     blocks
       .filter((block) => block.has_children)
