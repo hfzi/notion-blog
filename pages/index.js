@@ -29,7 +29,7 @@ export default function Home({ posts }) {
             );
             return (
               <div class="col-sm-3" style={{ marginTop: "20px" }}>
-                <div class="card">
+                <div class="card" style={{ minHeight: "330px" }}>
                   <img
                     src={post.properties.Image.files.map((x) => x.file.url)[0]}
                     alt={post.properties.Image.files.map((x) => x.file.name)}
@@ -49,7 +49,7 @@ export default function Home({ posts }) {
                       additional content.
                     </p> */}
                     <Link
-                      href={`/${slugify(
+                      href={`/post/${slugify(
                         post.properties.Name.title[0].text.content
                       )}_${post.id}`}
                     >
