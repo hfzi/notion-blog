@@ -36,7 +36,7 @@ const Navbar = (posts) => {
     <>
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="/">
             Navbar
           </a>
           <button
@@ -86,7 +86,7 @@ const Navbar = (posts) => {
                             <li key={i}>
                               <a
                                 className="dropdown-item"
-                                href={`./${key}/${value}`}
+                                href={`./${key}-${value}`}
                               >
                                 {value}
                               </a>
