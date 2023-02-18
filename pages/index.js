@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
-import slugify from "slugify"
+import Image from "next/image";
+import slugify from "slugify";
 import { getDatabase } from "../lib/notion";
 import { Text } from "./[id].js";
-// import styles from "./index.module.css";
+// import styles{{from "./index."mod"}}e.css";
 
 import Navbar from "../components/main/Navbar";
 import Header from "../components/main/Header";
@@ -12,12 +13,11 @@ export const databaseId = process.env.NOTION_DATABASE_ID;
 
 export default function Home({ posts }) {
   return (
-    <div>
+    <>
       <Header />
       <Navbar posts={posts} />
-      <main>
-        <h2>All Posts</h2>
-        <ol>
+      <div className="container">
+        <div className="row">
           {posts.map((post) => {
             const date = new Date(post.last_edited_time).toLocaleString(
               "en-US",
@@ -28,27 +28,67 @@ export default function Home({ posts }) {
               }
             );
             return (
-              <>
-                <li key={post.id}>
+              <div class="col-sm-3" style={{ marginTop: "20px" }}>
+                <div class="card">
                   <img
-                    src={post.properties.Image.files.map((x) => x.file.url)}
+                    src={post.properties.Image.files.map((x) => x.file.url)[0]}
                     alt={post.properties.Image.files.map((x) => x.file.name)}
-                    style={{ width: "100px" }}
+                    width="286"
+                    height="180"
+                    quality="30%"
+                    class="card-img-top"
                   />
-                  <h3>
-                    <Link href={`/${slugify(post.properties.Name.title[0].text.content)}_${post.id}`}>
+                  {console.log("post ", post)}
+                  <div class="card-body">
+                    {date}
+                    <h5 class="card-title">
                       <Text text={post.properties.Name.title} />
+                    </h5>
+                    {/* <p class="card-text">
+                      With supporting text below as a natural lead-in to
+                      additional content.
+                    </p> */}
+                    <Link
+                      href={`/${slugify(
+                        post.properties.Name.title[0].text.content
+                      )}_${post.id}`}
+                    >
+                      Read post →
                     </Link>
-                  </h3>
-                  <p>{date}</p>
-                  <Link href={`/${slugify(post.properties.Name.title[0].text.content)}_${post.id}`}>Read post →</Link>
-                </li>
-              </>
+                  </div>
+                </div>
+              </div>
+              // <>
+              //   <li key={post.id}>
+              //     <img
+              //       src={post.properties.Image.files.map((x) => x.file.url)}
+              //       alt={post.properties.Image.files.map((x) => x.file.name)}
+              //       style={{ width: "100px" }}
+              //     />
+              //     <h3>
+              //       <Link
+              //         href={`/${slugify(
+              //           post.properties.Name.title[0].text.content
+              //         )}_${post.id}`}
+              //       >
+              //         <Text text={post.properties.Name.title} />
+              //       </Link>
+              //     </h3>
+              //     <p>{date}</p>
+              //     <Link
+              //       href={`/${slugify(
+              //         post.properties.Name.title[0].text.content
+              //       )}_${post.id}`}
+              //     >
+              //       Read post →
+              //     </Link>
+              //   </li>
+              // </>
             );
           })}
-        </ol>
-      </main>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }
 
