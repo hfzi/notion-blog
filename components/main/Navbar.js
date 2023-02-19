@@ -62,7 +62,7 @@ const Navbar = (posts) => {
                       <a
                         className="nav-link active"
                         aria-current="page"
-                        href={`./${item}`}
+                        href={`/category/${item}`}
                       >
                         {item}
                       </a>
@@ -73,7 +73,7 @@ const Navbar = (posts) => {
                     <li className="nav-item dropdown" key={index}>
                       <a
                         className="nav-link dropdown-toggle"
-                        href={`./${key}`}
+                        href={`/category/${key}`}
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -86,7 +86,7 @@ const Navbar = (posts) => {
                             <li key={i}>
                               <a
                                 className="dropdown-item"
-                                href={`./${key}-${value}`}
+                                href={`/category/${key}-${value}`}
                               >
                                 {value}
                               </a>

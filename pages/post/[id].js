@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import slugify from "slugify";
 import { getDatabase, getPage, getBlocks } from "./../../lib/notion";

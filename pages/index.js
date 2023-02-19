@@ -1,9 +1,9 @@
-import Head from "next/head";
 import Link from "next/link";
 import slugify from "slugify";
 import { getDatabase } from "../lib/notion";
-import { Text } from "./[id].js";
-// import styles from "./index.module.css";
+// import { Text } from "../post/[id].js";
+import { Text } from "./[id]";
+// import styles{{from "./index."mod"}}e.css";
 
 import Navbar from "../components/main/Navbar";
 import Header from "../components/main/Header";
@@ -12,7 +12,7 @@ export const databaseId = process.env.NOTION_DATABASE_ID;
 
 export default function Home({ posts }) {
   return (
-    <div>
+    <>
       <Header />
       <Navbar posts={posts} />
       <div className="container">
@@ -27,23 +27,23 @@ export default function Home({ posts }) {
               }
             );
             return (
-              <div className="col-sm-3" style={{ marginTop: "20px" }}>
-                <div className="card" style={{ minHeight: "330px" }}>
+              <div class="col-sm-3" style={{ marginTop: "20px" }}>
+                <div class="card" style={{ minHeight: "330px" }}>
                   <img
                     src={post.properties.Image.files.map((x) => x.file.url)[0]}
                     alt={post.properties.Image.files.map((x) => x.file.name)}
                     width="286"
                     height="180"
                     quality="30%"
-                    className="card-img-top"
+                    class="card-img-top"
                   />
                   {console.log("post ", post)}
-                  <div className="card-body">
+                  <div class="card-body">
                     {date}
-                    <h5 className="card-title">
+                    <h5 class="card-title">
                       <Text text={post.properties.Name.title} />
                     </h5>
-                    {/* <p className="card-text">
+                    {/* <p class="card-text">
                       With supporting text below as a natural lead-in to
                       additional content.
                     </p> */}
@@ -57,11 +57,37 @@ export default function Home({ posts }) {
                   </div>
                 </div>
               </div>
+              // <>
+              //   <li key={post.id}>
+              //     <img
+              //       src={post.properties.Image.files.map((x) => x.file.url)}
+              //       alt={post.properties.Image.files.map((x) => x.file.name)}
+              //       style={{ width: "100px" }}
+              //     />
+              //     <h3>
+              //       <Link
+              //         href={`/${slugify(
+              //           post.properties.Name.title[0].text.content
+              //         )}_${post.id}`}
+              //       >
+              //         <Text text={post.properties.Name.title} />
+              //       </Link>
+              //     </h3>
+              //     <p>{date}</p>
+              //     <Link
+              //       href={`/${slugify(
+              //         post.properties.Name.title[0].text.content
+              //       )}_${post.id}`}
+              //     >
+              //       Read post →
+              //     </Link>
+              //   </li>
+              // </>
             );
           })}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

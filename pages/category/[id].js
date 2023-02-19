@@ -1,9 +1,7 @@
-import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
 import slugify from "slugify";
 import { getDatabase } from "./../../lib/notion";
-import { Text } from "./../[id].js";
+import { Text } from "../[id].js";
 // import styles{{from "./index."mod"}}e.css";
 
 import Navbar from "../../components/main/Navbar";
