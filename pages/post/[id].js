@@ -1,13 +1,13 @@
 import { Fragment } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import slugify from "slugify"
-import { getDatabase, getPage, getBlocks } from "../lib/notion";
-import { databaseId } from "./index.js";
-import styles from "./post.module.css";
+import slugify from "slugify";
+import { getDatabase, getPage, getBlocks } from "./../../lib/notion";
+import { databaseId } from "./../index.js";
+import styles from "./../post.module.css";
 
-import Navbar from "../components/main/Navbar";
-import Header from "../components/main/Header";
+import Navbar from "../../components/main/Navbar";
+import Header from "../../components/main/Header";
 
 export const Text = ({ text }) => {
   if (!text) {
@@ -192,7 +192,13 @@ export default function Post({ page, blocks, posts }) {
 export const getStaticPaths = async () => {
   const database = await getDatabase(databaseId);
   return {
-    paths: database.map((page) => ({ params: { id: `/${slugify(page.properties.Name.title[0].text.content)}_${page.id}` } })),
+    paths: database.map((page) => ({
+      params: {
+        id: `/${slugify(page.properties.Name.title[0].text.content)}_${
+          page.id
+        }`,
+      },
+    })),
     fallback: true,
   };
 };
@@ -200,10 +206,11 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   // const { id } = context.params;
   const database = await getDatabase(databaseId);
-  const id = context.params.id.split("_")[1]
+  const id = context.params.id.split("_")[1];
   const page = await getPage(id);
   const blocks = await getBlocks(id);
 
+  console.log("gelen ", database);
 
   // Retrieve block children for nested blocks (one level deep), for example toggle blocks
   // https://developers.notion.com/docs/working-with-page-content#reading-nested-blocks
@@ -227,7 +234,7 @@ export const getStaticProps = async (context) => {
     }
     return block;
   });
-  
+
   return {
     props: {
       page,
