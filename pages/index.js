@@ -1,10 +1,9 @@
 import Link from "next/link";
-import slugify from "slugify";
 import { getDatabase } from "../lib/notion";
 // import { Text } from "../post/[id].js";
 import { Text } from "./[id]";
 // import styles{{from "./index."mod"}}e.css";
-
+import slugify from "slugify";
 import Navbar from "../components/main/Navbar";
 import Header from "../components/main/Header";
 
@@ -37,7 +36,6 @@ export default function Home({ posts }) {
                     quality="30%"
                     class="card-img-top"
                   />
-                  {console.log("post ", post)}
                   <div class="card-body">
                     {date}
                     <h5 class="card-title">
@@ -48,41 +46,16 @@ export default function Home({ posts }) {
                       additional content.
                     </p> */}
                     <Link
-                      href={`/post/${slugify(
-                        post.properties.Name.title[0].text.content
-                      )}_${post.id}`}
+                      href={`/post/${
+                        slugify(post.properties.Name.title[0].text.content).toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", "")
+                      }_${post.id}`}
                     >
+                      {console.log("as ", slugify(post.properties.Name.title[0].text.content).toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}
                       Read post →
                     </Link>
                   </div>
                 </div>
               </div>
-              // <>
-              //   <li key={post.id}>
-              //     <img
-              //       src={post.properties.Image.files.map((x) => x.file.url)}
-              //       alt={post.properties.Image.files.map((x) => x.file.name)}
-              //       style={{ width: "100px" }}
-              //     />
-              //     <h3>
-              //       <Link
-              //         href={`/${slugify(
-              //           post.properties.Name.title[0].text.content
-              //         )}_${post.id}`}
-              //       >
-              //         <Text text={post.properties.Name.title} />
-              //       </Link>
-              //     </h3>
-              //     <p>{date}</p>
-              //     <Link
-              //       href={`/${slugify(
-              //         post.properties.Name.title[0].text.content
-              //       )}_${post.id}`}
-              //     >
-              //       Read post →
-              //     </Link>
-              //   </li>
-              // </>
             );
           })}
         </div>

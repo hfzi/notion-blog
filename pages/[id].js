@@ -1,10 +1,9 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import slugify from "slugify"
 import { getDatabase, getPage, getBlocks } from "../lib/notion";
 import { databaseId } from "./index.js";
 import styles from "./post.module.css";
-
+import slugify from "slugify";
 import Navbar from "../components/main/Navbar";
 import Header from "../components/main/Header";
 
@@ -187,7 +186,7 @@ export default function Post({ page, blocks, posts }) {
 export const getStaticPaths = async () => {
   const database = await getDatabase(databaseId);
   return {
-    paths: database.map((page) => ({ params: { id: `/${slugify(page.properties.Name.title[0].text.content)}_${page.id}` } })),
+    paths: database.map((page) => ({ params: { id: `/${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${page.id}` } })),
     fallback: true,
   };
 };

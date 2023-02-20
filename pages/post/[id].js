@@ -1,10 +1,9 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import slugify from "slugify";
 import { getDatabase, getPage, getBlocks } from "./../../lib/notion";
 import { databaseId } from "./../index.js";
 import styles from "./../post.module.css";
-
+import slugify from "slugify";
 import Navbar from "../../components/main/Navbar";
 import Header from "../../components/main/Header";
 
@@ -173,7 +172,7 @@ export default function Post({ page, blocks, posts }) {
       <Navbar posts={posts} />
       <article className={styles.container}>
         <h1 className={styles.name}>
-          <Text text={page.properties.Name.title} />
+          <Text text={page} />
         </h1>
         <section>
           {blocks.map((block) => (
@@ -193,7 +192,7 @@ export const getStaticPaths = async () => {
   return {
     paths: database.map((page) => ({
       params: {
-        id: `/${slugify(page.properties.Name.title[0].text.content)}_${
+        id: `/${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${
           page.id
         }`,
       },
@@ -236,7 +235,7 @@ export const getStaticProps = async (context) => {
 
   return {
     props: {
-      page,
+      page: page.properties.Name.title,
       posts: database,
       blocks: blocksWithChildren,
     },

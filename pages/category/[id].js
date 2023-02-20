@@ -1,9 +1,8 @@
 import Link from "next/link";
-import slugify from "slugify";
 import { getDatabase } from "./../../lib/notion";
 import { Text } from "../[id].js";
 // import styles{{from "./index."mod"}}e.css";
-
+import slugify from "slugify";
 import Navbar from "../../components/main/Navbar";
 import Header from "../../components/main/Header";
 
@@ -60,9 +59,9 @@ export default function Home({ posts, id }) {
                       additional content.
                     </p> */}
                             <Link
-                              href={`/post/${slugify(
-                                post.properties.Name.title[0].text.content
-                              )}_${post.id}`}
+                              href={`/post/${
+                                post.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", "")
+                              }_${post.id}`}
                             >
                               Read post →
                             </Link>
@@ -86,7 +85,7 @@ export const getStaticPaths = async () => {
   return {
     paths: database.map((page) => ({
       params: {
-        id: `/${slugify(page.properties.Name.title[0].text.content)}_${
+        id: `/${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${
           page.id
         }`,
       },
