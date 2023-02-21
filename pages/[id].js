@@ -11,13 +11,14 @@ export const Text = ({ text }) => {
   if (!text) {
     return null;
   }
-  return text.map((value) => {
+  return text.map((value, index) => {
     const {
       annotations: { bold, code, color, italic, strikethrough, underline },
       text,
     } = value;
     return (
       <span
+      key={index}
         className={[
           bold ? styles.bold : "",
           code ? styles.code : "",
@@ -41,51 +42,51 @@ const renderNestedList = (block) => {
   const isNumberedList = value.children[0].type === "numbered_list_item";
 
   if (isNumberedList) {
-    return <ol>{value.children.map((block) => renderBlock(block))}</ol>;
+    return <ol>{value.children.map((block) => renderBlock(block, block.id))}</ol>;
   }
-  return <ul>{value.children.map((block) => renderBlock(block))}</ul>;
+  return <ul>{value.children.map((block) => renderBlock(block, block.id))}</ul>;
 };
 
-const renderBlock = (block) => {
+const renderBlock = (block, index) => {
   const { type, id } = block;
   const value = block[type];
 
   switch (type) {
     case "paragraph":
       return (
-        <p>
+        <p key={index}>
           <Text text={value.rich_text} />
         </p>
       );
     case "heading_1":
       return (
-        <h1>
+        <h1 key={index}>
           <Text text={value.rich_text} />
         </h1>
       );
     case "heading_2":
       return (
-        <h2>
+        <h2 key={index}>
           <Text text={value.rich_text} />
         </h2>
       );
     case "heading_3":
       return (
-        <h3>
+        <h3 key={index}>
           <Text text={value.rich_text} />
         </h3>
       );
     case "bulleted_list_item":
     case "numbered_list_item":
       return (
-        <li>
+        <li key={index}>
           <Text text={value.rich_text} />
           {!!value.children && renderNestedList(block)}
         </li>
       );
     case "to_do":
       return (
-        <div>
+        <div key={index}>
           <label htmlFor={id}>
             <input type="checkbox" id={id} defaultChecked={value.checked} />{" "}
             <Text text={value.rich_text} />
@@ -94,7 +95,7 @@ const renderBlock = (block) => {
       );
     case "toggle":
       return (
-        <details>
+        <details key={index}>
           <summary>
             <Text text={value.rich_text} />
           </summary>
@@ -186,8 +187,8 @@ export default function Post({ page, blocks, posts }) {
 export const getStaticPaths = async () => {
   const database = await getDatabase(databaseId);
   return {
-    paths: database.map((page) => ({ params: { id: `${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\_`~() ]/g, "-").replace("?", ""))}-${page.id}` } })),
-    fallback: false,
+    paths: database.map((page) => ({ params: { id: `${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${page.id}` } })),
+    fallback: true,
   };
 };
 
