@@ -59,9 +59,12 @@ export default function Home({ asd, dsa, posts, id }) {
                       additional content.
                     </p> */}
                             <Link
-                              href={`post/${
-                                post.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", "")
-                              }_${post.id}`}
+                              href={`/post/${slugify(
+                                post.properties.Name.title[0].text.content
+                              )
+                                .toLowerCase()
+                                .replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-")
+                                .replace("?", "")}_${post.id}`}
                             >
                               Read post →
                             </Link>
@@ -96,9 +99,9 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const database = await getDatabase(databaseId);
-  
+
   console.log("first ", database);
-  
+
   return {
     props: {
       posts: database,

@@ -46,11 +46,20 @@ export default function Home({ posts }) {
                       additional content.
                     </p> */}
                     <Link
-                      href={`post/${
-                        slugify(post.properties.Name.title[0].text.content).toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", "")
-                      }_${post.id}`}
+                      href={`post/${slugify(
+                        post.properties.Name.title[0].text.content
+                      )
+                        .toLowerCase()
+                        .replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-")
+                        .replace("?", "")}_${post.id}`}
                     >
-                      {console.log("as ", slugify(post.properties.Name.title[0].text.content).toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}
+                      {console.log(
+                        "as ",
+                        slugify(post.properties.Name.title[0].text.content)
+                          .toLowerCase()
+                          .replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-")
+                          .replace("?", "")
+                      )}
                       Read post →
                     </Link>
                   </div>
