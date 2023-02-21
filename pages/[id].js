@@ -186,8 +186,8 @@ export default function Post({ page, blocks, posts }) {
 export const getStaticPaths = async () => {
   const database = await getDatabase(databaseId);
   return {
-    paths: database.map((page) => ({ params: { id: `/${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${page.id}` } })),
-    fallback: true,
+    paths: database.map((page) => ({ params: { id: `${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\_`~() ]/g, "-").replace("?", ""))}-${page.id}` } })),
+    fallback: false,
   };
 };
 

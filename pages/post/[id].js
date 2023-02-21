@@ -11,13 +11,14 @@ export const Text = ({ text }) => {
   if (!text) {
     return null;
   }
-  return text.map((value) => {
+  return text.map((value, index) => {
     const {
       annotations: { bold, code, color, italic, strikethrough, underline },
       text,
     } = value;
     return (
       <span
+      key={index}
         className={[
           bold ? styles.bold : "",
           code ? styles.code : "",
@@ -41,51 +42,51 @@ const renderNestedList = (block) => {
   const isNumberedList = value.children[0].type === "numbered_list_item";
 
   if (isNumberedList) {
-    return <ol>{value.children.map((block) => renderBlock(block))}</ol>;
+    return <ol>{value.children.map((block) => renderBlock(block, block.id))}</ol>;
   }
-  return <ul>{value.children.map((block) => renderBlock(block))}</ul>;
+  return <ul>{value.children.map((block) => renderBlock(block, block.id))}</ul>;
 };
 
-const renderBlock = (block) => {
+const renderBlock = (block, index) => {
   const { type, id } = block;
   const value = block[type];
 
   switch (type) {
     case "paragraph":
       return (
-        <p>
+        <p key={index}>
           <Text text={value.rich_text} />
         </p>
       );
     case "heading_1":
       return (
-        <h1>
+        <h1 key={index}>
           <Text text={value.rich_text} />
         </h1>
       );
     case "heading_2":
       return (
-        <h2>
+        <h2 key={index}>
           <Text text={value.rich_text} />
         </h2>
       );
     case "heading_3":
       return (
-        <h3>
+        <h3 key={index}>
           <Text text={value.rich_text} />
         </h3>
       );
     case "bulleted_list_item":
     case "numbered_list_item":
       return (
-        <li>
+        <li key={index}>
           <Text text={value.rich_text} />
           {!!value.children && renderNestedList(block)}
         </li>
       );
     case "to_do":
       return (
-        <div>
+        <div key={index}>
           <label htmlFor={id}>
             <input type="checkbox" id={id} defaultChecked={value.checked} />{" "}
             <Text text={value.rich_text} />
@@ -94,7 +95,7 @@ const renderBlock = (block) => {
       );
     case "toggle":
       return (
-        <details>
+        <details key={index}>
           <summary>
             <Text text={value.rich_text} />
           </summary>
@@ -158,16 +159,12 @@ const renderBlock = (block) => {
   }
 };
 
-export default function Post({ page, blocks, posts }) {
+export default function Post({ id, asd, page, blocks, posts }) {
   if (!page || !blocks) {
     return <div />;
   }
   return (
     <div>
-      {/* <Head>
-        <title>{page.properties.Name.title[0].plain_text}</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head> */}
       <Header />
       <Navbar posts={posts} />
       <article className={styles.container}>
@@ -192,26 +189,25 @@ export const getStaticPaths = async () => {
   return {
     paths: database.map((page) => ({
       params: {
-        id: `/${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${
+        id: `${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\_`~() ]/g, "-").replace("?", ""))}-${
           page.id
         }`,
       },
     })),
-    fallback: true,
+    fallback: false,
   };
 };
 
 export const getStaticProps = async (context) => {
   // const { id } = context.params;
   const database = await getDatabase(databaseId);
-  const id = context.params.id.split("_")[1];
+  
+  const idurl = context.params.id
+  // const id = idurl.split("-")[idurl.split("-").length -5] + "-" + idurl.split("-")[idurl.split("-").length -4] + "-" + idurl.split("-")[idurl.split("-").length -3] + "-" + idurl.split("-")[idurl.split("-").length -2] + "-" + idurl.split("-")[idurl.split("-").length -1]
+  const id = idurl.slice((idurl.length-36), 660)
   const page = await getPage(id);
   const blocks = await getBlocks(id);
 
-  console.log("gelen ", database);
-
-  // Retrieve block children for nested blocks (one level deep), for example toggle blocks
-  // https://developers.notion.com/docs/working-with-page-content#reading-nested-blocks
   const childBlocks = await Promise.all(
     blocks
       .filter((block) => block.has_children)
@@ -224,7 +220,6 @@ export const getStaticProps = async (context) => {
   );
 
   const blocksWithChildren = blocks.map((block) => {
-    // Add child blocks if the block should contain children but none exists
     if (block.has_children && !block[block.type].children) {
       block[block.type]["children"] = childBlocks.find(
         (x) => x.id === block.id
@@ -235,6 +230,7 @@ export const getStaticProps = async (context) => {
 
   return {
     props: {
+      id,
       page: page.properties.Name.title,
       posts: database,
       blocks: blocksWithChildren,

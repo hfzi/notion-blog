@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { getDatabase } from "./../../lib/notion";
-import { Text } from "../[id].js";
+import { getDatabase } from "../lib/notion";
+import { Text } from "../pages/[id].js";
 // import styles{{from "./index."mod"}}e.css";
 import slugify from "slugify";
-import Navbar from "../../components/main/Navbar";
-import Header from "../../components/main/Header";
+import Navbar from "../components/main/Navbar";
+import Header from "../components/main/Header";
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
 
@@ -29,8 +29,8 @@ export default function Home({ posts, id }) {
                   return id ? (
                     id.replace("-", "/") ==
                     post.properties.Status.select.name ? (
-                      <div class="col-sm-3" style={{ marginTop: "20px" }}>
-                        <div class="card" style={{ minHeight: "330px" }}>
+                      <div className="col-sm-3" style={{ marginTop: "20px" }}>
+                        <div className="card" style={{ minHeight: "330px" }}>
                           <img
                             src={
                               post.properties.Image.files.map(
@@ -43,29 +43,30 @@ export default function Home({ posts, id }) {
                             width="286"
                             height="180"
                             quality="30%"
-                            class="card-img-top"
+                            className="card-img-top"
                           />
                           {console.log(
                             "post ",
                             post.properties.Status.select.name
                           )}
-                          <div class="card-body">
+                          <div className="card-body">
                             {date}
-                            <h5 class="card-title">
+                            <h5 className="card-title">
                               <Text text={post.properties.Name.title} />
                             </h5>
-                            {/* <p class="card-text">
+                            {/* <p className="card-text">
                       With supporting text below as a natural lead-in to
                       additional content.
                     </p> */}
                             <Link
                               href={`/post/${
-                                post.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", "")
-                              }_${post.id}`}
+                                post.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\_`~() ]/g, "-").replace("?", "")
+                              }-${post.id}`}
                             >
                               Read post →
                             </Link>
                           </div>
+                          {console.log("id ", id)}
                         </div>
                       </div>
                     ) : null
@@ -85,7 +86,7 @@ export const getStaticPaths = async () => {
   return {
     paths: database.map((page) => ({
       params: {
-        id: `/${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${
+        id: `${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\_`~() ]/g, "-").replace("?", ""))}-${
           page.id
         }`,
       },
@@ -96,13 +97,14 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const database = await getDatabase(databaseId);
-
+  const idurl = context.params.id
   console.log("first ", database);
 
   return {
     props: {
       posts: database,
-      id: context.params.id,
+      // id: idurl.split("-")[idurl.split("-").length -5] + "-" + idurl.split("-")[idurl.split("-").length -4] + "-" + idurl.split("-")[idurl.split("-").length -3] + "-" + idurl.split("-")[idurl.split("-").length -2] + "-" + idurl.split("-")[idurl.split("-").length -1]
+      id: context.params.id
     },
     revalidate: 1,
   };

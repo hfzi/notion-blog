@@ -26,31 +26,30 @@ export default function Home({ posts }) {
               }
             );
             return (
-              <div class="col-sm-3" style={{ marginTop: "20px" }}>
-                <div class="card" style={{ minHeight: "330px" }}>
+              <div className="col-sm-3" style={{ marginTop: "20px" }} key={post.id}>
+                <div className="card" style={{ minHeight: "330px" }}>
                   <img
                     src={post.properties.Image.files.map((x) => x.file.url)[0]}
                     alt={post.properties.Image.files.map((x) => x.file.name)}
                     width="286"
                     height="180"
                     quality="30%"
-                    class="card-img-top"
+                    className="card-img-top"
                   />
-                  <div class="card-body">
+                  <div className="card-body">
                     {date}
-                    <h5 class="card-title">
+                    <h5 className="card-title">
                       <Text text={post.properties.Name.title} />
                     </h5>
-                    {/* <p class="card-text">
+                    {/* <p className="card-text">
                       With supporting text below as a natural lead-in to
                       additional content.
                     </p> */}
                     <Link
-                      href={`/post/${
-                        slugify(post.properties.Name.title[0].text.content).toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", "")
-                      }_${post.id}`}
+                      href={`post/${
+                        slugify(post.properties.Name.title[0].text.content).toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\_`~() ]/g, "-").replace("?", "")
+                      }-${post.id}`}
                     >
-                      {console.log("as ", slugify(post.properties.Name.title[0].text.content).toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}
                       Read post →
                     </Link>
                   </div>
