@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { getDatabase } from "../lib/notion";
-// import { Text } from "../post/[id].js";
-import { Text } from "./[id]";
-// import styles{{from "./index."mod"}}e.css";
+import { Text } from "./post/[id]";
 import slugify from "slugify";
 import Navbar from "../components/main/Navbar";
 import Header from "../components/main/Header";
@@ -51,15 +49,8 @@ export default function Home({ posts }) {
                       )
                         .toLowerCase()
                         .replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-")
-                        .replace("?", "")}_${post.id}`}
+                        .replace("?", "")}-${post.id}`}
                     >
-                      {console.log(
-                        "as ",
-                        slugify(post.properties.Name.title[0].text.content)
-                          .toLowerCase()
-                          .replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-")
-                          .replace("?", "")
-                      )}
                       Read post →
                     </Link>
                   </div>

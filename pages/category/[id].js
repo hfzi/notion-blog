@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getDatabase } from "./../../lib/notion";
-import { Text } from "../[id].js";
-// import styles{{from "./index."mod"}}e.css";
+import { Text } from "../post/[id].js";
 import slugify from "slugify";
 import Navbar from "../../components/main/Navbar";
 import Header from "../../components/main/Header";
@@ -64,13 +63,11 @@ export default function Home({ asd, dsa, posts, id }) {
                               )
                                 .toLowerCase()
                                 .replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-")
-                                .replace("?", "")}_${post.id}`}
+                                .replace("?", "")}-${post.id}`}
                             >
                               Read post →
                             </Link>
                           </div>
-                          {console.log("asd ", asd)}
-                          {console.log("dsa ", dsa)}
                         </div>
                       </div>
                     ) : null

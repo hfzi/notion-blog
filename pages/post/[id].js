@@ -192,7 +192,7 @@ export const getStaticPaths = async () => {
   return {
     paths: database.map((page) => ({
       params: {
-        id: `${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}_${
+        id: `${slugify(page.properties.Name.title[0].text.content.toLowerCase().replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-").replace("?", ""))}-${
           page.id
         }`,
       },
@@ -204,7 +204,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   // const { id } = context.params;
   const database = await getDatabase(databaseId);
-  const id = context.params.id.split("_")[1];
+  const id = context.params.id.slice((idurl.length-36), 660)
   const page = await getPage(id);
   const blocks = await getBlocks(id);
 

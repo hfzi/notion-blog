@@ -55,47 +55,48 @@ const Navbar = (posts) => {
               {finalResult.map((item, index) => {
                 const key = Object.keys(item)[0];
                 const values = item[key];
-
-                if (typeof values === "string") {
-                  return (
-                    <li className="nav-item" key={index}>
-                      <a
-                        className="nav-link active"
-                        aria-current="page"
-                        href={`/category/${item}`}
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li className="nav-item dropdown" key={index}>
-                      <a
-                        className="nav-link dropdown-toggle"
-                        href={`/category/${key}`}
-                        role="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        {key}
-                      </a>
-                      <ul className="dropdown-menu">
-                        {values.map((value, i) => {
-                          return (
-                            <li key={i}>
-                              <a
-                                className="dropdown-item"
-                                href={`/category/${key}-${value}`}
-                              >
-                                {value}
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </li>
-                  );
+                if (item !== "KAPALI") {
+                  if (typeof values === "string") {
+                    return (
+                      <li className="nav-item" key={index}>
+                        <a
+                          className="nav-link active"
+                          aria-current="page"
+                          href={`/category/${item}`}
+                        >
+                          {item}
+                        </a>
+                      </li>
+                    );
+                  } else {
+                    return (
+                      <li className="nav-item dropdown" key={index}>
+                        <a
+                          className="nav-link dropdown-toggle"
+                          href={`/category/${key}`}
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          {key}
+                        </a>
+                        <ul className="dropdown-menu">
+                          {values.map((value, i) => {
+                            return (
+                              <li key={i}>
+                                <a
+                                  className="dropdown-item"
+                                  href={`/category/${key}-${value}`}
+                                >
+                                  {value}
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </li>
+                    );
+                  }
                 }
               })}
             </ul>
