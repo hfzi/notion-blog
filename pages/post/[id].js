@@ -204,11 +204,11 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   // const { id } = context.params;
   const database = await getDatabase(databaseId);
-  const id = context.params.id.slice((idurl.length-36), 660)
+  const id = context.params.id.slice((context.params.id.length-36), 660)
   const page = await getPage(id);
   const blocks = await getBlocks(id);
 
-  console.log("gelen ", database);
+  console.log("gelen ", id);
 
   // Retrieve block children for nested blocks (one level deep), for example toggle blocks
   // https://developers.notion.com/docs/working-with-page-content#reading-nested-blocks

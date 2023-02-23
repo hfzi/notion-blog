@@ -26,7 +26,6 @@ export default function Home({ posts }) {
             if (post.properties.Status.select.name !== "KAPALI") {
               return (
                 <div class="col-sm-3" style={{ marginTop: "20px" }}>
-                  {console.log("first ", post.properties.Status.select.name)}
                   <div class="card" style={{ minHeight: "330px" }}>
                     <img
                       src={
