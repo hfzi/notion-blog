@@ -28,8 +28,8 @@ export default function Home({ asd, dsa, posts, id }) {
                   return id ? (
                     id.replace("-", "/") ==
                     post.properties.Status.select.name ? (
-                      <div class="col-sm-3" style={{ marginTop: "20px" }}>
-                        <div class="card" style={{ minHeight: "330px" }}>
+                      <div className="col-sm-3" style={{ marginTop: "20px" }}>
+                        <div className="card" style={{ minHeight: "330px" }}>
                           <img
                             src={
                               post.properties.Image.files.map(
@@ -42,18 +42,14 @@ export default function Home({ asd, dsa, posts, id }) {
                             width="286"
                             height="180"
                             quality="30%"
-                            class="card-img-top"
+                            className="card-img-top"
                           />
-                          {console.log(
-                            "post ",
-                            post.properties.Status.select.name
-                          )}
-                          <div class="card-body">
+                          <div className="card-body">
                             {date}
-                            <h5 class="card-title">
+                            <h5 className="card-title">
                               <Text text={post.properties.Name.title} />
                             </h5>
-                            {/* <p class="card-text">
+                            {/* <p className="card-text">
                       With supporting text below as a natural lead-in to
                       additional content.
                     </p> */}

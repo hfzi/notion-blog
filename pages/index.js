@@ -7,11 +7,12 @@ import Header from "../components/main/Header";
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
 
-export default function Home({ posts }) {
+export default function Home({ posts, logo }) {
   return (
     <>
       <Header />
-      <Navbar posts={posts} />
+      <Navbar posts={posts} logo={logo} />
+      {console.log("first ", logo)}
       <div className="container">
         <div className="row">
           {posts.map((post) => {
@@ -25,8 +26,8 @@ export default function Home({ posts }) {
             );
             if (post.properties.Status.select.name !== "KAPALI") {
               return (
-                <div class="col-sm-3" style={{ marginTop: "20px" }}>
-                  <div class="card" style={{ minHeight: "330px" }}>
+                <div className="col-sm-3" style={{ marginTop: "20px" }}>
+                  <div className="card" style={{ minHeight: "330px" }}>
                     <img
                       src={
                         post.properties.Image.files.map((x) => x.file.url)[0]
@@ -35,14 +36,14 @@ export default function Home({ posts }) {
                       width="286"
                       height="180"
                       quality="30%"
-                      class="card-img-top"
+                      className="card-img-top"
                     />
-                    <div class="card-body">
+                    <div className="card-body">
                       {date}
-                      <h5 class="card-title">
+                      <h5 className="card-title">
                         <Text text={post.properties.Name.title} />
                       </h5>
-                      {/* <p class="card-text">
+                      {/* <p className="card-text">
                         With supporting text below as a natural lead-in to
                         additional content.
                       </p> */}
@@ -74,6 +75,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       posts: database,
+      logo: process.env.LOGO_TEXT,
     },
     revalidate: 1,
   };

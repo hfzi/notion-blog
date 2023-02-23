@@ -1,8 +1,8 @@
 import React from "react";
 // import "extra-method";
 
-const Navbar = (posts) => {
-  var veri = posts.posts.map((post) => post.properties.Status.select.name);
+const Navbar = ({posts, logo}) => {
+  var veri = posts.map((post) => post.properties.Status.select.name);
 
   let uniqueChars = veri.filter((c, index) => {
     return veri.indexOf(c) === index;
@@ -37,7 +37,7 @@ const Navbar = (posts) => {
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            Navbar
+            {logo}
           </a>
           <button
             className="navbar-toggler"
