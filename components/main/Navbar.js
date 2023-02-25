@@ -37,7 +37,8 @@ const Navbar = ({ posts, logo }) => {
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            {logo}asd
+            {logo}{process.env.LOGO_TEXT ? process.env.LOGO_TEXT :null}
+            {console.log("first ", process.env.LOGO_TEXT)}
           </a>
           <button
             className="navbar-toggler"

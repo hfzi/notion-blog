@@ -7,11 +7,11 @@ import Header from "../../components/main/Header";
 
 export const databaseId = process.env.NOTION_DATABASE_ID;
 
-export default function Home({ asd, dsa, posts, id }) {
+export default function Home({ logo, posts, id }) {
   return (
     <>
       <Header />
-      {posts ? <Navbar posts={posts} /> : null}
+      {posts ? <Navbar posts={posts} logo={logo} /> : null}
       <div className="container">
         {console.log("dassd ", id)}
         <div className="row">
@@ -142,6 +142,7 @@ export const getStaticProps = async (context) => {
     props: {
       posts: database,
       id: context.params.id,
+      logo: process.env.LOGO_TEXT
     },
     revalidate: 1,
   };
