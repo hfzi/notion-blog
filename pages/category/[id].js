@@ -13,6 +13,7 @@ export default function Home({ asd, dsa, posts, id }) {
       <Header />
       {posts ? <Navbar posts={posts} /> : null}
       <div className="container">
+        {console.log("dassd ", id)}
         <div className="row">
           {posts
             ? posts.map((post) => {
@@ -25,8 +26,9 @@ export default function Home({ asd, dsa, posts, id }) {
                   }
                 );
                 {
-                  return id ? (
-                    id.replace("-", "/") ==
+                  return id.includes("_") ? (
+                    console.log("asd ", id),
+                    id.replace("_", "/") ==
                     post.properties.Status.select.name ? (
                       <div className="col-sm-3" style={{ marginTop: "20px" }}>
                         <div className="card" style={{ minHeight: "330px" }}>
@@ -46,6 +48,7 @@ export default function Home({ asd, dsa, posts, id }) {
                           />
                           <div className="card-body">
                             {date}
+                            {console.log("first ", post)}
                             <h5 className="card-title">
                               <Text text={post.properties.Name.title} />
                             </h5>
@@ -67,6 +70,48 @@ export default function Home({ asd, dsa, posts, id }) {
                         </div>
                       </div>
                     ) : null
+                  ) : id ==
+                    post.properties.Status.select.name ? (
+                      console.log("asd ", id),
+                    <div className="col-sm-3" style={{ marginTop: "20px" }}>
+                      <div className="card" style={{ minHeight: "330px" }}>
+                        <img
+                          src={
+                            post.properties.Image.files.map(
+                              (x) => x.file.url
+                            )[0]
+                          }
+                          alt={post.properties.Image.files.map(
+                            (x) => x.file.name
+                          )}
+                          width="286"
+                          height="180"
+                          quality="30%"
+                          className="card-img-top"
+                        />
+                        <div className="card-body">
+                          {date}
+                          {console.log("first ", post)}
+                          <h5 className="card-title">
+                            <Text text={post.properties.Name.title} />
+                          </h5>
+                          {/* <p className="card-text">
+                    With supporting text below as a natural lead-in to
+                    additional content.
+                  </p> */}
+                          <Link
+                            href={`/post/${slugify(
+                              post.properties.Name.title[0].text.content
+                            )
+                              .toLowerCase()
+                              .replace(/[.,\/#!$%\^'’&\*;:{}=\-_`~() ]/g, "-")
+                              .replace("?", "")}-${post.id}`}
+                          >
+                            Read post →
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
                   ) : null;
                 }
                 // {post.properties.Status.select.name == }
@@ -83,7 +128,7 @@ export const getStaticPaths = async () => {
   return {
     paths: database.map((page) => ({
       params: {
-        id: page.properties.Status.select.name.replace("/", "-"),
+        id: page.properties.Status.select.name.replace("/", "_"),
       },
     })),
     fallback: true,
@@ -93,22 +138,10 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const database = await getDatabase(databaseId);
 
-  console.log("first ", database);
-
   return {
     props: {
       posts: database,
       id: context.params.id,
-      asd: database.map((page) => ({
-        params: {
-          id: page.properties.Status.select.name,
-        },
-      })),
-      dsa: database.map((page) => ({
-        params: {
-          id: page.properties.Name.title[0].text.content,
-        },
-      })),
     },
     revalidate: 1,
   };

@@ -14,6 +14,7 @@ export default function Home({ posts, logo }) {
       <Navbar posts={posts} logo={logo} />
       {console.log("first ", logo)}
       <div className="container">
+        {console.log("first2 ", posts)}
         <div className="row">
           {posts.map((post) => {
             const date = new Date(post.last_edited_time).toLocaleString(

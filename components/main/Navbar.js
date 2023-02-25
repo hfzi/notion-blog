@@ -1,7 +1,7 @@
 import React from "react";
 // import "extra-method";
 
-const Navbar = ({posts, logo}) => {
+const Navbar = ({ posts, logo }) => {
   var veri = posts.map((post) => post.properties.Status.select.name);
 
   let uniqueChars = veri.filter((c, index) => {
@@ -37,7 +37,7 @@ const Navbar = ({posts, logo}) => {
       <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            {logo}
+            {logo}asd
           </a>
           <button
             className="navbar-toggler"
@@ -64,7 +64,7 @@ const Navbar = ({posts, logo}) => {
                           aria-current="page"
                           href={`/category/${item}`}
                         >
-                          {item}
+                          {item.replace("-", " ")}
                         </a>
                       </li>
                     );
@@ -86,7 +86,7 @@ const Navbar = ({posts, logo}) => {
                               <li key={i}>
                                 <a
                                   className="dropdown-item"
-                                  href={`/category/${key}-${value}`}
+                                  href={`/category/${key}_${value}`}
                                 >
                                   {value}
                                 </a>
@@ -116,6 +116,15 @@ const Navbar = ({posts, logo}) => {
       </nav>
     </>
   );
+};
+
+export const getStaticProps = async () => {
+  return {
+    props: {
+      logo: process.env.LOGO_TEXT,
+    },
+    revalidate: 1,
+  };
 };
 
 export default Navbar;
