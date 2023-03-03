@@ -158,7 +158,7 @@ const renderBlock = (block) => {
   }
 };
 
-export default function Post({ page, blocks, posts }) {
+export default function Post({ page, blocks, posts, logo }) {
   if (!page || !blocks) {
     return <div />;
   }
@@ -169,7 +169,7 @@ export default function Post({ page, blocks, posts }) {
         <link rel="icon" href="/favicon.ico" />
       </Head> */}
       <Header />
-      <Navbar posts={posts} />
+      <Navbar posts={posts} logo={logo} />
       <article className={styles.container}>
         <h1 className={styles.name}>
           <Text text={page} />
@@ -238,6 +238,7 @@ export const getStaticProps = async (context) => {
       page: page.properties.Name.title,
       posts: database,
       blocks: blocksWithChildren,
+      logo: process.env.LOGO_TEXT
     },
     revalidate: 1,
   };
